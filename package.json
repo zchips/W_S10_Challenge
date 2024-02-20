@@ -1,5 +1,5 @@
 {
-  "name": "react-project",
+  "name": "w_s10_challenge",
   "version": "0.0.1",
   "scripts": {
     "dev": "fkill :9009 :3003 -f -s && concurrently \"npm:backend\" \"npm:frontend\"",
@@ -55,5 +55,9 @@
   "engines": {
     "node": ">=18.x",
     "npm": ">=9.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bloominstituteoftechnology/W_S10_Challenge.git"
   }
 }
