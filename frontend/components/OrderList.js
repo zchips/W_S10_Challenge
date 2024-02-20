@@ -7,8 +7,7 @@ export default function OrderList() {
       <h2>Pizza Orders</h2>
       <ol>
         {
-          orders && orders.filter(() => true)
-            .map(() => {
+          orders.map(() => {
               return (
                 <li key={1}>
                   <div>
