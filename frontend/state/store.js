@@ -7,7 +7,7 @@ const exampleReducer = (state = { count: 0 }) => {
 export const resetStore = () => configureStore({
   reducer: {
     example: exampleReducer,
-    // add your reducers here
+    // add your reducer(s) here
   },
   middleware: getDefault => getDefault().concat(
     // if using RTK Query for your networking: add your middleware here
