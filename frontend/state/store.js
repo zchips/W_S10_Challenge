@@ -1,6 +1,6 @@
-export const createStore = () => {
+export const resetStore = () => {
   let store = {}
   return store
 }
 
-export const store = createStore()
+export const store = resetStore()

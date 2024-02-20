@@ -5,7 +5,7 @@ import '@testing-library/jest-dom'
 import { Provider } from 'react-redux'
 import server from './backend/pizza-router-mock'
 import { reset } from './backend/helpers'
-import { createStore } from './frontend/state/store'
+import { resetStore } from './frontend/state/store'
 import App from './frontend/components/App'
 
 jest.setTimeout(1500)
@@ -15,7 +15,7 @@ const queryOptions = { exact: false }
 beforeAll(() => { server.listen() })
 afterAll(() => { server.close() })
 beforeEach(() => {
-  render(<Provider store={createStore()}><App /></Provider>)
+  render(<Provider store={resetStore()}><App /></Provider>)
 })
 afterEach(() => {
   reset()
