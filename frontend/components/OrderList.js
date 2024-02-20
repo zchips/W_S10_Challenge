@@ -8,14 +8,14 @@ export default function OrderList() {
       <ol>
         {
           orders.map(() => {
-              return (
-                <li key={1}>
-                  <div>
-                    order details here
-                  </div>
-                </li>
-              )
-            })
+            return (
+              <li key={1}>
+                <div>
+                  order details here
+                </div>
+              </li>
+            )
+          })
         }
       </ol>
       <div id="sizeFilters">

@@ -59,14 +59,12 @@ This endpoint allows you to POST a new pizza order. Here is an example of a vali
 { "message": "fullName is required" }
 ```
 
-### 👉 TASK 3 - Wire Redux to the app
+### 👉 TASK 3 - Redux setup
 
-Complete work:
-
-- Inside [store.js](./frontend/state/store.js) to set up a Redux store
-- Inside [index.js](./frontend/index.js) provide the store to the entire component tree
-
-Check in the Redux tab of Chrome Devtools that your setup is working.
+- Inside [store.js](./frontend/state/store.js) lives the setup of your Redux store
+- Redux, Redux Toolkit, Redux Thunk, RTK Query are already installed and working
+- The Redux store is already available to your component tree (see Redux Devtools)
+- Plug in your own reducer(s) as you build them during the following tasks
 
 ### 👉 TASK 4 - Track the history of orders using Redux
 
