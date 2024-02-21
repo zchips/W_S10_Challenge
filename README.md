@@ -174,3 +174,8 @@ If your code has a syntax problem, the app will print error messages in the cons
 **Do NOT delete your repository from GitHub!** Instead, commit frequently as you work. Make a commit whenever you achieve anything and the app isn't crashing in Chrome. This in practice creates restore points you can use should you wreak havoc with your app. If you find yourself in a mess, use git reset --hard to simply discard all changes to your code since your last commit.
 
 </details>
+
+## Staff Only
+
+- Solution repo using Redux Toolkit and RTK Query [HERE](https://github.com/bloominstituteoftechnology/W_S10_Challenge_End)
+- Solution repo using Redux and Redux Thunk [HERE](https://github.com/bloominstituteoftechnology/W_S10_Challenge_End_Old_Syntax)
