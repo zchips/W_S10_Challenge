@@ -18,7 +18,7 @@ Welcome to Sprint 10 Challenge! In this project, you will demonstrate your abili
 
 It's up to you whether to track the totality of app state using Redux, or go instead with a combination of different approaches.
 
-Your main goal is to implement a form that can POST pizza orders to a server. The finished app will also display a list of past orders obtained via GET.
+The main goal is to implement a form that can POST pizza orders to a server. The finished product will also display a list of past orders obtained via GET.
 
 ## 🥷 Tasks
 
@@ -28,7 +28,9 @@ Your fully-functional **design mock** is [HERE](https://w-s10-challenge-ac3b8bb5
 
 Study it using Chrome Devtools, paying special attention to the Network and the Redux tabs.
 
-Your finished product will have to match the functionality of the design.
+After completing the following tasks, your app must match the functionality of the design.
+
+You are free to design the state of the app however you'd like, so the structure of your Redux store might not match that of the mock.
 
 ### 👉 TASK 2 - Study the API using Postman
 
@@ -62,9 +64,10 @@ This endpoint allows you to POST a new pizza order. Here is an example of a vali
 ### 👉 TASK 3 - Redux setup
 
 - Inside [store.js](./frontend/state/store.js) lives the setup of your Redux store
-- Redux, Redux Toolkit, Redux Thunk, RTK Query are already installed and working
-- The Redux store is already available to your component tree (see Redux Devtools)
-- Plug in your own reducer(s) as you build them during the following tasks
+- Setup is simplified due to the use of Redux Toolkit, and might look different to what you're used to
+- Redux, Redux Toolkit, Redux Thunk and Redux Devtools are already installed and configured
+- The Redux store is already available for use by components (see Redux Devtools)
+- Plug in your own reducer(s) as you build them in the following tasks, see example
 
 ### 👉 TASK 4 - Track the history of orders using Redux
 
@@ -85,6 +88,7 @@ This endpoint allows you to POST a new pizza order. Here is an example of a vali
 - Complete the form in [PizzaForm.js](./frontend/components/PizzaForm.js)
 - A message should render informing the user that the POST request is in progress (see prototype)
 - Validation errors should render on the page (see prototype)
+- Reset the inputs to their original state on successful POST
 - **The state of the inputs** of the form must be tracked using one of the following options:
   - The Reducer Hook
   - Context + the Reducer Hook
