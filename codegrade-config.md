@@ -11,7 +11,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 # Install Node.js
-nvm i 20
+nvm i --lts
 # Install jq
 sudo apt-get install jq
 ```
@@ -36,7 +36,7 @@ echo 'Copied test file'
 #!/bin/bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm use 20
+nvm use --lts
 npm i
 ```
 
@@ -50,20 +50,17 @@ npm i
 #!/bin/bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm use 20
+nvm use --lts
 npm run test:codegrade -- codegrade.test.js --json --outputFile=results.json
 # Extracting the number of passed and total tests
 num_passed_tests=$(jq '.numPassedTests' results.json)
 num_total_tests=$(jq '.numTotalTests' results.json)
-
 # Calculating the ratio
 if [ "$num_total_tests" -eq 0 ]; then
   echo "No tests were found."
   exit 1
 fi
-
 ratio="$num_passed_tests/$num_total_tests"
-
 # Output the result in the desired format
 echo "{ \"tag\": \"points\", \"points\": \"$ratio\" }" >&3
 ```
