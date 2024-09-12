@@ -1,32 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-    name: '',
-    size: '',
-    toppings: [],
-};
-
+// Create a slice for managing the size filter in the pizza form
 const pizzaFormSlice = createSlice({
-    name: 'pizzaForm',
-    initialState,
-    reducers: {
-        setName: (state, action) => {
-            state.name = action.payload;
-        },
-        setSize: (state, action) => {
-            state.size = action.payload;
-        },
-        toggleTopping: (state, action) => {
-            const topping = action.payload;
-            if (state.toppings.includes(topping)) {
-                state.toppings = state.toppings.filter(t => t !== topping);
-            } else {
-                state.toppings.push(topping);
-            }
-        },
+  name: 'pizzaForm', // Clear and consistent slice name
+  initialState: { filter: 'All' }, // Initial filter state
+
+  reducers: {
+    // Reducer to set the size filter
+    setFilter: (state, action) => {
+      state.filter = action.payload; // Assign payload directly to the filter state
     },
+  },
 });
 
-export const { setName, setSize, toggleTopping } = pizzaFormSlice.actions;
-
+// Export the reducer for store configuration
 export default pizzaFormSlice.reducer;
+
+// Export the action creators for component dispatching
+export const { setFilter } = pizzaFormSlice.actions;
