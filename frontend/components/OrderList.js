@@ -23,7 +23,7 @@ export default function OrderList() {
           .map(({ id, customer, size, toppings }) => (
             <li key={id}>
               <div>
-                {`${customer} ordered a size ${size} with ${getLenStr(toppings?.length || 0)}`}
+                {`${customer} ordered a size ${size} with ${getLenStr(toppings?.length || 'no toppings')}`}
               </div>
             </li>
           ))}
