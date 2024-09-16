@@ -1,103 +1,133 @@
-import React, { useState } from 'react';
-import { usePlaceOrderMutation } from '../state/api'; // Correct import for usePlaceOrderMutation
+import React, { useReducer } from 'react';
+import { usePlaceOrderMutation } from '../state/api';
 
-const initialToppings = ['Pepperoni', 'Sausage', 'Mushrooms', 'Onions', 'Bacon', 'Extra cheese', 'Black olives', 'Green peppers', 'Pineapple', 'Spinach'];
 
-// Helper function for rendering radio buttons (DRY principle)
-const renderRadioGroup = (options, name, selectedValue, onChange) =>
-  options.map(option => (
-    <label key={option}>
-      <input
-        type="radio"
-        name={name}
-        value={option}
-        checked={selectedValue === option}
-        onChange={onChange}
-        data-testid={`size-${option}`} // Simple test ID for each size option
-      />
-      {option}
-    </label>
-  ));
+
+const CHANGE_INPUT = 'CHANGE_INPUT';
+const RESET_FORM = 'RESET_FORM';
+const CHANGE_CHECKED = 'CHANGE_CHECKED';
+
+const initialFormState = {
+  fullName: '',
+  size: '',
+  '1': false,
+  '2': false,
+  '3': false,
+  '4': false,
+  '5': false,
+  '6': false,
+  '7': false,
+  
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case CHANGE_CHECKED: {
+      const { name, checked } = action.payload;
+      return { ...state, [name]: checked };
+    }
+    case CHANGE_INPUT: {
+      const { name, value } = action.payload;
+      return { ...state, [name]: value };
+    }
+    case RESET_FORM:
+      return initialFormState;
+    default:
+      return state;
+  }
+};
 
 export default function PizzaForm() {
-  const [placeOrder] = usePlaceOrderMutation(); // Using the correct mutation hook
-  const [customer, setCustomer] = useState('');
-  const [size, setSize] = useState('');
-  const [toppings, setToppings] = useState([]);
-  const [errors, setErrors] = useState({}); // For form validation
+  const [state, dispatch] = useReducer(reducer, initialFormState);
+  const [placeOrder, { error: creationError, isLoading: creatingOrder }] = usePlaceOrderMutation(); // Corrected hook
 
-  // Handle form submit
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // Basic validation
-    const newErrors = {};
-    if (!customer) newErrors.customer = 'Name is required';
-    if (!size) newErrors.size = 'Size is required';
-    setErrors(newErrors);
-
-    // If no errors, submit form
-    if (Object.keys(newErrors).length === 0) {
-      await placeOrder({ customer, size, toppings }); // Use the mutation to place the order
-      setCustomer('');
-      setSize('');
-      setToppings([]);
-    }
+  const onChange = ({ target: { name, value } }) => {
+    dispatch({ type: CHANGE_INPUT, payload: { name, value } });
   };
 
-  // Handle toppings selection
-  const handleToppingsChange = (event) => {
-    const { value } = event.target;
-    setToppings((prev) => prev.includes(value) ? prev.filter(t => t !== value) : [...prev, value]);
+  const onToggle = ({ target: { name, checked } }) => {
+    dispatch({ type: CHANGE_CHECKED, payload: { name, checked } });
+  };
+
+  const resetForm = () => {
+    dispatch({ type: RESET_FORM });
+  };
+
+  const onNewOrder = (evt) => {
+    evt.preventDefault();
+    const { fullName, size, ...toppings } = state;
+    const selectedToppings = Object.keys(toppings).filter((tp) => toppings[tp] === true);
+    placeOrder({ fullName, size, toppings: selectedToppings }) // Use placeOrder instead
+      .unwrap()
+      .then((data) => {
+        console.log(data.message);
+        resetForm();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* Customer Input */}
-      <div>
-        <label>Full Name</label>
-        <input
-          type="text"
-          value={customer}
-          onChange={(e) => setCustomer(e.target.value)}
-          data-testid="fullNameInput" // Simple test ID for full name input
-          placeholder="Enter full name"
-        />
-        {errors.customer && <p>{errors.customer}</p>}
+    <form onSubmit={onNewOrder}>
+      <h2>Pizza Form</h2>
+      {creatingOrder && <div className="pending">Order in progress...</div>}
+      {creationError && <div className="failure">Order failed: {creationError.data.message}</div>}
+
+      {/* Customer Name Input */}
+      <div className="input-group">
+        <div>
+          <label htmlFor="fullName">Full Name</label><br />
+          <input
+            onChange={onChange}
+            value={state.fullName}
+            data-testid="fullNameInput"
+            id="fullName"
+            name="fullName"
+            placeholder="Type full name"
+            type="text"
+          />
+        </div>
       </div>
 
       {/* Size Selection */}
-      <div> 
-        <h3 data-testid="sizeSelect">Select Size</h3>
-        {renderRadioGroup(['Small', 'Medium', 'Large'], 'size', size, (e) => setSize(e.target.value))}
-        {errors.size && <p>{errors.size}</p>}
-      
+      <div className="input-group">
+        <div>
+          <label htmlFor="size">Size</label><br />
+          <select
+            data-testid="sizeSelect"
+            id="size"
+            name="size"
+            value={state.size}
+            onChange={onChange}
+          >
+            <option value="">----Choose size----</option>
+            <option value="S">Small</option>
+            <option value="M">Medium</option>
+            <option value="L">Large</option>
+          </select>
+        </div>
       </div>
 
       {/* Toppings Selection */}
-      <div>
-        <h3>Select Toppings</h3>
-        {initialToppings.map(topping => (
+      <div className="input-group">
+        {['Pepperoni', 'Greenpeppers', 'Pineapple', 'Mushrooms', 'Ham', 'Sausage', 'Bacon', 'Extra Cheese'].map((topping, index) => (
           <label key={topping}>
             <input
+              data-testid={`check${topping}`}
+              name={(index + 1).toString()}
               type="checkbox"
-              value={topping}
-              checked={toppings.includes(topping)}
-              onChange={handleToppingsChange}
-              data-testid={`topping-${topping}`} // Simple test ID for each topping checkbox
-              data-testid="checkPepperoni"
-              data-testid="checkGreenpeppers"
-              data-testid="checkPinapple"
-              data-testid="checkMushrooms"
-              data-testid="checkHam"
+              onChange={onToggle}
+              checked={state[(index + 1).toString()]}
             />
             {topping}
+            <br />
           </label>
         ))}
       </div>
 
       {/* Submit Button */}
-      <button type="submit" data-testid="submit">Place Order</button>
+      <input data-testid="submit" type="submit" />
     </form>
   );
 }
